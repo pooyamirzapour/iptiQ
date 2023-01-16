@@ -61,10 +61,11 @@ class LoadBalancerTest {
         List<Provider> providers = new ArrayList<>();
         providers.add(new Provider("Instance0", ProviderStatusEnum.INCLUDED));
         loadBalancer.register(providers);
-        loadBalancer.include("Instance1");
+        loadBalancer.exclude("Instance0");
+        loadBalancer.include("Instance0");
         String randomProvider = loadBalancer.get(LoadBalancerTypeEnum.ROUND_ROBIN);
 
-        Assertions.assertEquals(2, circularQueue.size());
+        Assertions.assertEquals("Instance0", randomProvider);
     }
 
     @Test

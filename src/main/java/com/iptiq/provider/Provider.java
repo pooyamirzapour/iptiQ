@@ -16,6 +16,10 @@ public class Provider {
         this.instance = UUID.randomUUID().toString();
     }
 
+    public Provider(String instance) {
+        this.instance = instance;
+    }
+
     public String get() {
         return this.instance;
     }

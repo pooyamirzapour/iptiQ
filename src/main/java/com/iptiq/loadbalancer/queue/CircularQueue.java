@@ -22,14 +22,16 @@ public class CircularQueue {
 
     /**
      * Add a provider to circular queue.
+     *
      * @param provider Provider
      */
-    public void add(Provider provider) {
+    private void add(Provider provider) {
+
         if (isReplaced(provider)) {
             return;
         }
         int size = 10;
-        if (queue.size() > size) {
+        if (queue.size() == size) {
             throw new IPTIQServiceException(ErrorCode.QUEUE_IS_FULL);
         }
         queue.add(provider);
@@ -48,6 +50,7 @@ public class CircularQueue {
 
     /**
      * Peeks a provider from circular queue.
+     *
      * @return provider
      */
     public Provider peek() {
@@ -66,6 +69,7 @@ public class CircularQueue {
 
     /**
      * Get providers based on the status.
+     *
      * @param providerStatusEnum Status
      * @return a queue.
      */
@@ -94,11 +98,28 @@ public class CircularQueue {
     }
 
     public void exclude(Provider provider) {
-        if (queue.stream().anyMatch(f -> f.getInstance().equals(provider.getInstance()))) {
-            queue.stream()
-                    .filter(f -> f.getInstance().equals(provider.getInstance()))
-                    .findFirst()
-                    .ifPresent(f -> f.setStatus(ProviderStatusEnum.EXCLUDED));
+        if (queue.stream().noneMatch(f -> f.getInstance().equals(provider.getInstance()))) {
+            throw new IPTIQServiceException(ErrorCode.PROVIDER_NOT_FOUND);
+        }
+        queue.stream()
+                .filter(f -> f.getInstance().equals(provider.getInstance()))
+                .findFirst()
+                .ifPresent(f -> f.setStatus(ProviderStatusEnum.EXCLUDED));
+    }
+
+    public void include(Provider provider) {
+        if (queue.stream().noneMatch(f -> f.getInstance().equals(provider.getInstance()))) {
+            throw new IPTIQServiceException(ErrorCode.PROVIDER_NOT_FOUND);
+        }
+        queue.stream()
+                .filter(f -> f.getInstance().equals(provider.getInstance()))
+                .findFirst()
+                .ifPresent(f -> f.setStatus(ProviderStatusEnum.INCLUDED));
+    }
+
+    public void validate(List<Provider> providers) {
+        if (providers.stream().noneMatch(f -> f.getStatus().equals(ProviderStatusEnum.INCLUDED))) {
+            throw new IPTIQServiceException(ErrorCode.INCLUDED_PROVIDER_NOT_FOUND);
         }
     }
 }

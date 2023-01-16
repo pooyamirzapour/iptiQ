@@ -5,8 +5,6 @@ import com.iptiq.loadbalancer.queue.CircularQueue;
 import com.iptiq.loadbalancer.service.BalancerStrategyService;
 import com.iptiq.loadbalancer.service.BalancingService;
 import com.iptiq.loadbalancer.service.LoadBalancingTypeService;
-import com.iptiq.loadbalancer.service.RandomService;
-import com.iptiq.loadbalancer.service.RoundRobinService;
 import com.iptiq.loadbalancer.task.HeartBeatChecker;
 import com.iptiq.provider.Provider;
 import com.iptiq.provider.ProviderService;
@@ -63,9 +61,14 @@ public class LoadBalancer {
      * @param instances - Instances
      */
     public void register(List<Provider> instances) {
+        validateProviders( instances);
         circularQueue.addAll(instances);
         scheduleTask();
         restrictInputRequest(circularQueue);
+    }
+
+    private void validateProviders(List<Provider> providers) {
+        circularQueue.validate(providers);
     }
 
     private void scheduleTask() {
@@ -81,7 +84,6 @@ public class LoadBalancer {
      */
     public String get(LoadBalancerTypeEnum loadBalancerTypeEnum) {
         try {
-            System.out.println(semaphore.availablePermits());
             semaphore.acquire();
             return balancingService.get(loadBalancerTypeEnum).get();
         } catch (InterruptedException ex) {

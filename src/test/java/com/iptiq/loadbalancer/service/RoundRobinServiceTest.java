@@ -6,6 +6,9 @@ import com.iptiq.provider.Provider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 class RoundRobinServiceTest {
     @Test
     void test_get_provider_random() {
@@ -18,9 +21,11 @@ class RoundRobinServiceTest {
 
     private CircularQueue getCircularQueue() {
         CircularQueue circularQueue = new CircularQueue();
+        List<Provider> providers=new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            circularQueue.add(new Provider("Instance" + i, ProviderStatusEnum.INCLUDED));
+            providers.add(new Provider("Instance" + i, ProviderStatusEnum.INCLUDED));
         }
+        circularQueue.addAll(providers);
         return circularQueue;
     }
 }
