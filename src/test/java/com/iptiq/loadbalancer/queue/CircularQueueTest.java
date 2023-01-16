@@ -1,9 +1,8 @@
 package com.iptiq.loadbalancer.queue;
 
-import com.iptiq.loadbalancer.component.LoadBalancerTypeEnum;
 import com.iptiq.loadbalancer.exception.IPTIQServiceException;
-import com.iptiq.provider.ProviderStatusEnum;
 import com.iptiq.provider.Provider;
+import com.iptiq.provider.ProviderStatusEnum;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ class CircularQueueTest {
 
     @Test
     void test_queue_is_full() {
-        List<Provider> providers=new ArrayList<>();
+        List<Provider> providers = new ArrayList<>();
         for (int i = 0; i < 11; i++) {
             providers.add(new Provider("Instance" + i, ProviderStatusEnum.INCLUDED));
         }
@@ -37,7 +36,7 @@ class CircularQueueTest {
 
     @Test
     void test_queue_get_provider() {
-        List<Provider> providers=new ArrayList<>();
+        List<Provider> providers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             providers.add(new Provider("Instance" + i, ProviderStatusEnum.INCLUDED));
         }
@@ -48,7 +47,7 @@ class CircularQueueTest {
 
     @Test
     void test_peek_is_working() {
-        List<Provider> providers=new ArrayList<>();
+        List<Provider> providers = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             providers.add(new Provider("Instance" + i, ProviderStatusEnum.INCLUDED));
         }
@@ -58,15 +57,12 @@ class CircularQueueTest {
         Assertions.assertEquals("Instance2", circularQueue.peek().getInstance());
     }
 
-
     @Test
-    void test_validate_provider_for_initialize()
-    {
+    void test_validate_provider_for_initialize() {
         List<Provider> providers = new ArrayList<>();
         providers.add(new Provider("Instance0", ProviderStatusEnum.EXCLUDED));
         providers.add(new Provider("Instance1", ProviderStatusEnum.EXCLUDED));
-       Assertions.assertThrows(IPTIQServiceException.class,()-> circularQueue.validate(providers));
+        Assertions.assertThrows(IPTIQServiceException.class, () -> circularQueue.validate(providers));
     }
-
 
 }

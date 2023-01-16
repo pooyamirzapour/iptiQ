@@ -25,4 +25,4 @@ Or open the project in Intellij idea or your IDE and go to test/java folder, and
 
 ### To Do
 This is not a runnable project or production ready, so I ignored logging, monitoring, documenting, and also it is possible to implement new algorithms for the load balancer.
-Some properties like queue size, and maximum capacity limit, ect can be configured. 
+Some properties like queue size, and maximum capacity limit, ect can be configured. Remove, register, and deregister of providers are not implemented.

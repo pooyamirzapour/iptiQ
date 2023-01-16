@@ -2,7 +2,6 @@ package com.iptiq.loadbalancer.task;
 
 import com.iptiq.provider.ProviderService;
 
-import java.time.LocalDateTime;
 import java.util.TimerTask;
 
 /**
